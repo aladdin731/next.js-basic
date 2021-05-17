@@ -169,4 +169,73 @@ Code splitting 只load该page需要的东西
 
 If you need to link to an external page outside the Next.js app, just use an <a> tag without Link.
 
+### Assets
+Files inside public can be referenced from the root of the application similar to pages.
+src="/images/profile.jpg"
+
+#### Image Component
+Instead of optimizing images at build time, Next.js optimizes images on-demand, as users request them. 
+build times aren't increased, whether shipping 10 images or 10 million images.
+import Image from 'next/image' // Resizing & optimizing images 
+
+### Metadata Head React Component
+import Head from 'next/head'
+<Head>
+  <title>First Post</title> 
+</Head>
+// the browser tab -> First Post
+
+### CSS Styling
+CSS Module automatically generates unique class names. don’t have to worry about class name collisions.
+To use CSS Modules, the CSS file name must end with .module.css.
+import styles from './xx.module.css'
+className={styles.class-name-you-defined}
+
+#### Global Styles --   pages/_app.js
+CSS Modules are useful for component-level styles. 
+But if you want some CSS to be loaded by every page, create a file called pages/_app.js 
+need to restart the development server when you add pages/_app.js.
+
+#### classnames --- a library to toggle classes
+npm install classnames
+import cn from 'classnames'
+```
+<div
+      className={cn({
+        [styles.success]: type === 'success',
+        [styles.error]: type === 'error'
+      })}
+    >
+      {children}
+</div>
+```
+
+#### Tailwind CSS
+create top-level fill postcss.config.js
+```
+module.exports = {
+  plugins: [
+    'tailwindcss',
+    'postcss-flexbugs-fixes',
+    [
+      'postcss-preset-env',
+      {
+        autoprefixer: {
+          flexbox: 'no-2009'
+        },
+        stage: 3,
+        features: {
+          'custom-properties': false
+        }
+      }
+    ]
+  ],
+  purge: [
+    // Use *.tsx if using TypeScript
+    './pages/**/*.js',
+    './components/**/*.js'
+  ]
+}
+```
+npm install tailwindcss postcss-preset-env postcss-flexbugs-fixes
 
