@@ -30,6 +30,7 @@ The difference is in when it generates the HTML for a page
 #### SGR
 HTML is generated at build time and will be reused on each request
 That means in production, the page HTML is generated when you run `next build`.
+In development (next dev), getStaticProps will be called on every request.
 Statically generated pages can be cached by CDN with no extra configuration to boost performance.???
 
 ##### without data
@@ -51,17 +52,25 @@ export async function getStaticProps() {
   const posts = await res.json()
 
   // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
+  // will receive `posts` as a prop at build time 
   return {
-    props: {
+    props: { // 这就是component里的props
       posts,
     },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every second
+    revalidate: 1, // In seconds
   }
 }
 
 export default Blog
 ```
 To fetch this data on pre-render, Next.js allows you to export an async function called getStaticProps from the same file. This function gets called at build time and lets you pass fetched data to the page's props on pre-render.
+
+you can write code such as direct database queries without them being sent to browsers. You should not fetch an API route from getStaticProps — instead, you can write the server-side code directly in getStaticProps.
+
+getStaticProps can only be exported from a page. You can’t export it from non-page files.
 
 getStaticPaths(usually in addition to getStaticProps)
 ```
@@ -72,6 +81,7 @@ export async function getStaticPaths() {
   const posts = await res.json()
 
   // Get the paths we want to pre-render based on posts
+  // paths are key words here
   const paths = posts.map((post) => ({
     params: { id: post.id },
   }))
@@ -81,7 +91,19 @@ export async function getStaticPaths() {
   return { paths, fallback: false }
 }
 ```
+You cannot use getStaticPaths with getServerSideProps.
+
+
 Can I pre-render this page ahead of a user's request ? yes?- > Static generation
+
+
+
+#### Incremental Static Regeneration
+ Incremental Static Regeneration allows you to update existing pages by re-rendering them in the background as traffic comes in.
+// Next.js will attempt to re-generate the page:
+// - When a request comes in
+// - At most once every second
+revalidate: 1, // In seconds
 
 #### Server-side Rendering or Dynamic Rendering
 The HTML is generated on each request
@@ -107,6 +129,7 @@ export default Page
 ```
 getServerSideProps is similar to getStaticProps, but the difference is that getServerSideProps is run on every request instead of on build time.
 results in slower performance than Static Generation, use this only if absolutely necessary.
+
 
 
 对于每个page都可以选择其中一种 一个app可以同时拥有这两种
