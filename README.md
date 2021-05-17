@@ -9,6 +9,7 @@ Next.js is built around the concept of pages. A page is a React Component export
 Pages are associated with a route based on their file name. For example pages/about.js is mapped to /about. 
 和function的名字无关 和file name有关
 不写名字直接export default xxx 也可以
+pages/index.js is associated with the / route.
 
 ### dynammic routes
 Next.js supports pages with dynamic routes. For example, if you create a file called pages/posts/[id].js, then it will be accessible at posts/1, posts/2, etc.
@@ -132,6 +133,40 @@ results in slower performance than Static Generation, use this only if absolutel
 
 
 
-对于每个page都可以选择其中一种 一个app可以同时拥有这两种
+对于每个page都可以选择其中一种 一个app可以同时拥有这两种'
+
+## SEO (search engine optimization) 搜索引擎引流
+SEO stands for search engine optimization, which is the activity of optimizing your website to get more organic traffic from search engines. SEO involves a lot of different techniques and aspects that we should pay attention to to make our website more attractive and accessible to a search engine.
+
+## Single-Page Application and Server-rendered application
+### SPA
+better performance(no need to load a new HTML page every time)
+but a lack of SEO results
+cannot be properly indexed by search engines
+
+
+### Server-rendered-application 
+achieve better SEO results in search engines 
+and still have a pretty decent performance.
+
+Here are some things that you should pay attention to in order to get a nice SEO result:
+Meta tags
+Accessibility
+Progressive web apps
+
+
+#### Navigation -> Link a
+{' '} adds an empty space, which is used to divide text over multiple lines.
+The Link component enables client-side navigation between two pages in the same Next.js app.
+Client-side navigation means that the page transition happens using JavaScript, which is faster than the default navigation done by the browser.
+```
+<Link href="/">
+  <a>Back to home</a>
+</Link>
+```
+Code splitting 只load该page需要的东西
+有link的时候 会 prefetch the code for the linked page 
+
+If you need to link to an external page outside the Next.js app, just use an <a> tag without Link.
 
 
