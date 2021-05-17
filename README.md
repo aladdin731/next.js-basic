@@ -44,6 +44,7 @@ function Blog({ posts }) {
 }
 
 // This function gets called at build time
+
 export async function getStaticProps() {
   // Call an external API endpoint to get posts
   const res = await fetch('https://.../posts')
@@ -86,12 +87,13 @@ Can I pre-render this page ahead of a user's request ? yes?- > Static generation
 The HTML is generated on each request
 your page needs to pre-render frequently updated data (fetched from an external API). 
 getServerSideProps
-
+```
 function Page({ data }) {
   // Render data...
 }
 
 // This gets called on every request
+
 export async function getServerSideProps() {
   // Fetch data from external API
   const res = await fetch(`https://.../data`)
@@ -102,7 +104,7 @@ export async function getServerSideProps() {
 }
 
 export default Page
-
+```
 getServerSideProps is similar to getStaticProps, but the difference is that getServerSideProps is run on every request instead of on build time.
 results in slower performance than Static Generation, use this only if absolutely necessary.
 
